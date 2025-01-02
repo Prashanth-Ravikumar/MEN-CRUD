@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Product = require('./models/product.model.js');
 const app = express();
 
+//Middleware 
 app.use(express.json());
 
 app.get('/', (req,res)=>{
@@ -31,7 +32,7 @@ app.get('/api/product/:id',async (req, res) => {
     catch(error) {
         res.status(500).json({message: error.message});
     }
-})
+});
 
 //Create a product - POST Method
 
@@ -65,7 +66,25 @@ app.put('/api/product/:id', async(req, res) => {
     catch(error) {
         res.status(500).json({message: error.message});
     }
-})
+});
+
+//Delete a product - DELETE Method
+
+app.delete('/api/product/:id', async(req,res) =>{
+    try{
+        const product = await Product.findByIdAndDelete(req.params.id);
+
+        if(!product){
+            res.status(404).send({message: "Product not found"});
+        }
+
+        res.status(200).json({message: "Product Deleted successfully"});
+    }
+    catch(error){
+        res.status(500).jason({message: error.message});
+    }
+
+});
 
 
 //Connect to Mongodb
