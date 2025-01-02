@@ -8,6 +8,32 @@ app.use(express.json());
 app.get('/', (req,res)=>{
     res.send("Hello from Node API");
 });
+ 
+//Get all products
+
+app.get('/api/products', async (req, res) => {
+    try {
+        const products = await Product.find({});
+        res.status(200).json(products);
+    } 
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+//Get a single product
+
+app.get('/api/product/:id',async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        res.status(200).jason(product);
+        }
+    catch(error) {
+        res.status(500).json({message: error.message});
+    }
+})
+
+//Update a product
 
 app.post('/api/products', async (req,res) => {
    
@@ -16,11 +42,13 @@ app.post('/api/products', async (req,res) => {
         res.status(200).json(product);
         }
     catch(error) {
-        res.status(400).json({message: error.message});
+        res.status(500).json({message: error.message});
     }
        
 });
 
+
+//Connect to mongodb
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
 .then(() => {
