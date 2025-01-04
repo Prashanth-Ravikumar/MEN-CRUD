@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Product = require('./models/product.model.js');
 const ProductRoutes = require('./routes/product.route.js');
+require('dotenv').config();
 const app = express();
 
 //Middleware 
@@ -9,93 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 //Routes
-app.use('/api/products', ProductRoutes)
-
-
-app.get('/', (req, res)=>{
-    res.send("Hello from Node API");
-});
- 
-// //Read all products - GET Method
-
-// app.get('/api/products', async (req, res) => {
-//     try {
-//         const products = await Product.find({});
-//         res.status(200).json(products);
-//     } 
-//     catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
-
-// //Read a single product - GET Method with ID parameter
-
-// app.get('/api/products/:id',async (req, res) => {
-//     try {
-//         const product = await Product.findById(req.params.id);
-//         res.status(200).json(product);
-//         }
-//     catch(error) {
-//         res.status(500).json({message: error.message});
-//     }
-// });
-
-// //Create a product - POST Method
-
-// app.post('/api/products', async (req,res) => {
-   
-//     try{
-//         const product = await Product.create(req.body);
-//         res.status(200).json(product);
-//         }
-//     catch(error) {
-//         res.status(500).json({message: error.message});
-//     }
-       
-// });
-
-
-// //Update a product - PUT Method 
-
-// app.put('/api/products/:id', async(req, res) => {
-//     try{
-//         const product = await Product.findByIdAndUpdate(req.params.id, req.body);
-
-//     if(!product){
-//         res.status(404).send({message: "Product not found"});
-//     }
-
-//     const updatedproduct = await Product.findById(req.params.id);
-//     res.status(200).send(updatedproduct);
-
-//     }
-//     catch(error) {
-//         res.status(500).json({message: error.message});
-//     }
-// });
-
-// //Delete a product - DELETE Method
-
-// app.delete('/api/products/:id', async(req,res) =>{
-//     try{
-//         const product = await Product.findByIdAndDelete(req.params.id);
-
-//         if(!product){
-//             res.status(404).send({message: "Product not found"});
-//         }
-
-//         res.status(200).json({message: "Product Deleted successfully"});
-//     }
-//     catch(error){
-//         res.status(500).json({message: error.message});
-//     }
-
-// });
+app.use('/api/products', ProductRoutes);
 
 
 //Connect to Mongodb
-
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log('Connected!');
     app.listen(3000, () => {
@@ -105,4 +23,3 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 .catch(() =>{
     console.log("connection failed!")
 });
-
