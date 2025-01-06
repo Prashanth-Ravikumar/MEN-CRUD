@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: true}));
 app.use('/api/products', ProductRoutes);
 
 
-//Connect to Mongodb
+//Connecting to Mongodb
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log('Connected!');
@@ -20,6 +20,6 @@ mongoose.connect(process.env.MONGO_URI)
         console.log("Port is running at 3000");
     });
 })
-.catch(() =>{
-    console.log("connection failed!")
+.catch((error) =>{
+    console.log("connection failed!", error);
 });
